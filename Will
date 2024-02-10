@@ -1,0 +1,26 @@
+// SPDX-License-Identifier:MIT 
+pragma solidity ^0.8.20 ;
+
+contract Will {
+ address public owner ; 
+ uint    fortune ;
+ bool deseased ;
+
+ constructor() payable public {
+    owner = msg.sender ; // msg sender represents address that 
+                              is being called 
+    fortune = msg.value ; // msg value tells us how much ether 
+                              is being sent
+    deseased = false ;
+ }
+  /* create modifier so the only person who can call the 
+   contract is the owner */
+
+   modifier onlyOwner {
+    require(msg.sender == owner) ;
+    _;
+   }
+
+
+
+}
