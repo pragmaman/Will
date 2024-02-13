@@ -6,11 +6,11 @@ contract Will {
  uint    fortune ;
  bool deseased ;
 
- constructor() payable public {
+ constructor() payable  {
     owner = msg.sender ; // msg sender represents address that 
-                              is being called 
+                           //   is being called 
     fortune = msg.value ; // msg value tells us how much ether 
-                              is being sent
+                            //  is being sent
     deseased = false ;
  }
   /* create modifier so the only person who can call the 
@@ -20,6 +20,42 @@ contract Will {
     require(msg.sender == owner) ;
     _;
    }
+
+ // create modifier so that we only allocate funds if friends grandparent 
+ // deseased 
+
+    modifier mustBeDeseased {
+      require( deseased == true) ;
+        _;     
+    }
+    // list of family wallets 
+   address payable[]  familyWallets ;
+    // map through inheritance
+   mapping(address => uint) inheritance ;
+
+   // set inheritance function for each address 
+
+    function setInheritance(address payable wallet , uint amount) public onlyOwner {
+// to add wallets to the family wallets .push method
+     familyWallets.push(wallet);
+     inheritance[wallet] = amount ;
+
+
+    }
+    // pay each family member based on their wallet 
+     function payout() private  mustBeDeseased    {
+        //with a for loop you can loop through things and set conditions
+        for(uint i= 0; i < familyWallets.length; i++) {
+            familyWallets[i].transfer(inheritance[familyWallets[i]]) ;
+            // transferring funds from contracts address to receivers address        
+        }
+
+     }
+
+     function hasDeseased() public onlyOwner {
+        deseased = true ;
+        payout() ;
+     }
 
 
 
