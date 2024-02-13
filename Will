@@ -29,24 +29,24 @@ contract Will {
         _;     
     }
     // list of family wallets 
-   address payable[]  familyWallets ;
+   address payable[]  beneficiers ;
     // map through inheritance
-   mapping(address => uint) inheritance ;
+   mapping(address => uint) allocation ;
 
    // set inheritance function for each address 
 
     function setInheritance(address payable wallet , uint amount) public onlyOwner {
 // to add wallets to the family wallets .push method
-     familyWallets.push(wallet);
-     inheritance[wallet] = amount ;
+     beneficiers.push(wallet);
+     allocation[wallet] = amount ;
 
 
     }
     // pay each family member based on their wallet 
      function payout() private  mustBeDeseased    {
         //with a for loop you can loop through things and set conditions
-        for(uint i= 0; i < familyWallets.length; i++) {
-            familyWallets[i].transfer(inheritance[familyWallets[i]]) ;
+        for(uint i= 0; i < beneficiers.length; i++) {
+            beneficiers[i].transfer(allocation[beneficiers[i]]) ;
             // transferring funds from contracts address to receivers address        
         }
 
